@@ -5,9 +5,9 @@
         "auth_token_url": "https://lti-ri.imsglobal.org/platforms/7/access_tokens",
         "key_set_url": "https://lti-ri.imsglobal.org/platforms/7/platform_keys/6.json",
         "private_key_file": "/private.key",
-        "deployment": {
-            "1234": "1234"
-        }
+        "deployment": [
+            "1234"
+        ]
     },
     "ltiadvantagevalidator.imsglobal.org": {
         "client_id": "imstestuser",
@@ -15,8 +15,8 @@
         "auth_token_url": "https://oauth2server.imsglobal.org/oauth2server/authcodejwt",
         "key_set_url": "https://oauth2server.imsglobal.org/jwks",
         "private_key_file": "/cert_suite_private.key",
-        "deployment": {
-            "testdeploy": "testdeploy"
-        }
+        "deployment": [
+            "testdeploy"
+        ]
     }
 }

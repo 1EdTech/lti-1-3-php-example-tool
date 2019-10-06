@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
-include_once("db/example_database.php");
+require_once __DIR__ . '/db/example_database.php';
 
 use \IMSGlobal\LTI;
 $launch = LTI\LTI_Message_Launch::new(new Example_Database())
@@ -13,9 +13,9 @@ if ($launch->is_deep_link_launch()) {
     <div class="dl-config">
         <h1>Pick a Difficulty</h1>
         <ul>
-            <li><a href="<?= TOOL_HOST ?>/game_example/configure.php?diff=easy&launch_id=<?= $launch->get_launch_id(); ?>">Easy</a></li>
-            <li><a href="<?= TOOL_HOST ?>/game_example/configure.php?diff=normal&launch_id=<?= $launch->get_launch_id(); ?>">Normal</a></li>
-            <li><a href="<?= TOOL_HOST ?>/game_example/configure.php?diff=hard&launch_id=<?= $launch->get_launch_id(); ?>">Hard</a></li>
+            <li><a href="<?= TOOL_HOST ?>/configure.php?diff=easy&launch_id=<?= $launch->get_launch_id(); ?>">Easy</a></li>
+            <li><a href="<?= TOOL_HOST ?>/configure.php?diff=normal&launch_id=<?= $launch->get_launch_id(); ?>">Normal</a></li>
+            <li><a href="<?= TOOL_HOST ?>/configure.php?diff=hard&launch_id=<?= $launch->get_launch_id(); ?>">Hard</a></li>
         </ul>
     </div>
     <?php

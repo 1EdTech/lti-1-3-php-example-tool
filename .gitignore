@@ -4,3 +4,4 @@ composer.lock
 src/db/keys/*
 src/db/configs/local.json
 .env
+.DS_Store
