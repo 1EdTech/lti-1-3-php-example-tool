@@ -6,7 +6,8 @@ use \IMSGlobal\LTI;
 $launch = LTI\LTI_Message_Launch::new(new Example_Database())
     ->validate();
 
-?><link href="static/breakout.css" rel="stylesheet"><?php
+?><link href="static/breakout.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Gugi" rel="stylesheet"><?php
 
 if ($launch->is_deep_link_launch()) {
     ?>
@@ -25,7 +26,7 @@ if ($launch->is_deep_link_launch()) {
 
 <div id="game-screen">
     <div style="position:absolute;width:1000px;margin-left:-500px;left:50%; display:block">
-        <div id="scoreboard" style="position:absolute; right:0; width:200px">
+        <div id="scoreboard" style="position:absolute; right:0; width:200px; height:486px">
             <h2 style="margin-left:12px;">Scoreboard</h2>
             <table id="leadertable" style="margin-left:12px;">
             </table>
@@ -36,7 +37,6 @@ if ($launch->is_deep_link_launch()) {
         </canvas>
     </div>
 </div>
-<link href="https://fonts.googleapis.com/css?family=Gugi" rel="stylesheet">
 <script>
     // Set game difficulty if it has been set in deep linking
     var curr_diff = "<?= $launch->get_launch_data()['https://purl.imsglobal.org/spec/lti/claim/custom']['difficulty'] ?: 'normal'; ?>";
