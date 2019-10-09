@@ -433,7 +433,9 @@ document.fonts.load('50px Gugi').then(frame);
 var endGame = function() {
     window.pause = true;
     window.gameover = true;
-    window.submitScore();
+
+    // Do something with the score?
+
 }
 
 var refreshScoreBoard = function() {
@@ -445,20 +447,3 @@ var refreshScoreBoard = function() {
     }
     document.getElementById("leadertable").innerHTML = output;
 }
-
-var submitScore = function() {
-    var time_taken = Math.floor(Date.now() / 1000) - start_time;
-    var xhttp = new XMLHttpRequest();
-    xhttp.addEventListener("load", getScoreBoard);
-    xhttp.open("GET", "api/score.php?launch_id=" + launch_id + "&score=" + window.score + "&time=" + time_taken, false);
-    xhttp.send();
-}
-
-var getScoreBoard = function() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.addEventListener("load", refreshScoreBoard);
-    xhttp.open("GET", "api/scoreboard.php?launch_id=" + launch_id, true);
-    xhttp.send();
-}
-
-getScoreBoard();
