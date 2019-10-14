@@ -15,6 +15,6 @@
         }
     ],
     "require": {
-        "imsglobal/lti-1p3-tool": "dev-composer"
+        "imsglobal/lti-1p3-tool": "dev-master"
     }
 }

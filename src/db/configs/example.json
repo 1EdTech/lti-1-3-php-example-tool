@@ -1,9 +1,9 @@
 {
     "http://imsglobal.org": {
         "client_id": "testing12345",
-        "auth_login_url": "https://lti-ri.imsglobal.org/platforms/7/authorizations/new",
-        "auth_token_url": "https://lti-ri.imsglobal.org/platforms/7/access_tokens",
-        "key_set_url": "https://lti-ri.imsglobal.org/platforms/7/platform_keys/6.json",
+        "auth_login_url": "https://lti-ri.imsglobal.org/platforms/531/authorizations/new",
+        "auth_token_url": "https://lti-ri.imsglobal.org/platforms/531/access_tokens",
+        "key_set_url": "https://lti-ri.imsglobal.org/platforms/531/platform_keys/529.json",
         "private_key_file": "/private.key",
         "deployment": [
             "1234"
