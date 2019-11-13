@@ -36,6 +36,6 @@ $time_lineitem = LTI\LTI_Lineitem::new()
     ->set_score_maximum(999)
     ->set_label('Time Taken')
     ->set_resource_id('time'.$launch->get_launch_data()['https://purl.imsglobal.org/spec/lti/claim/resource_link']['id']);
-var_dump($grades->put_grade($time, $time_lineitem));
+$grades->put_grade($time, $time_lineitem);
 echo '{"success" : true}';
 ?>
