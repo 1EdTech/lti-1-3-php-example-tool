@@ -46,6 +46,14 @@ docker-compose up --build
 
 You're now free to launch in and use the tool.
 
+# Example Platform
+Due to popular demand, an example platform has been added to show an example of launching into the example game.
+
+The registration and deployment between the example platform and tool is already set up, so no configuration is needed.
+
+To view the example platform, go to http://localhost:9001/platform
+
+**Note:** The platform is for example purposes only and not a full platform library.
 
 # Contributing
 If you have improvements, suggestions or bug fixes, feel free to make a pull request or issue and someone will take a look at it.

@@ -19,6 +19,7 @@ class Example_Database implements LTI\Database {
             ->set_auth_token_url($_SESSION['iss'][$iss]['auth_token_url'])
             ->set_client_id($_SESSION['iss'][$iss]['client_id'])
             ->set_key_set_url($_SESSION['iss'][$iss]['key_set_url'])
+            ->set_kid($_SESSION['iss'][$iss]['kid'])
             ->set_issuer($iss)
             ->set_tool_private_key($this->private_key($iss));
     }

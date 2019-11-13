@@ -1,0 +1,40 @@
+<ul>
+    <li>Fancy LMS</li>
+    <li>Users</li>
+    <li>Courses</li>
+        <li class="sub" onclick="document.getElementById('frame').src='https://ltiphp.ngrok.io/oidc_demo/oidc_login_302.php?iss=https%3A%2F%2Flocalhost&login_hint=12345&target_link_uri=https%3A%2F%2Fltiphp.ngrok.io%2Fgame.php&lti_message_hint=12345'">302</li>
+        <li class="sub" onclick="document.getElementById('frame').src='https://ltiphp.ngrok.io/oidc_demo/oidc_login_js.php?iss=https%3A%2F%2Flocalhost&login_hint=12345&target_link_uri=https%3A%2F%2Fltiphp.ngrok.io%2Fgame.php&lti_message_hint=12345'">js</li>
+        <li class="sub" onclick="document.getElementById('frame').src='https://ltiphp.ngrok.io/oidc_demo/oidc_login_hybrid.php?iss=https%3A%2F%2Flocalhost&login_hint=12345&target_link_uri=https%3A%2F%2Fltiphp.ngrok.io%2Fgame.php&lti_message_hint=12345'">hybrid</li>
+    <li>Settings</li>
+</ul>
+<iframe id="frame" style="width:800px; height:500px" >
+
+</iframe>
+<style>
+ul {
+    position:absolute;
+    left:0;
+    top:0;
+    width:200px;
+    bottom:0;
+    background-color:darkslategray;
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    margin:0;
+    list-style-type: none;
+}
+li {
+    padding-top: 26px;
+
+}
+li.sub {
+    padding-left:26px;
+    font-size: 24px;
+}
+iframe {
+    position: absolute;
+    margin-left: 250px;
+}
+</style>
