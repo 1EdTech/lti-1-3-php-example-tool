@@ -5,29 +5,41 @@ require_once __DIR__ . '/../../db/example_database.php';
 
 use \Firebase\JWT\JWT;
 $message_jwt = [
-    "iss" => 'https://localhost',
+    "iss" => 'http://localhost:9001',
     "aud" => ['d42df408-70f5-4b60-8274-6c98d3b9468d'],
-    "sub" => '181c62b1e-3101-4100-b4bc-0542dbdfb549',
+    "sub" => '0ae836b9-7fc9-4060-006f-27b2066ac545',
     "exp" => time() + 600,
     "iat" => time(),
     "nonce" => uniqid("nonce"),
     "https://purl.imsglobal.org/spec/lti/claim/deployment_id" => '8c49a5fa-f955-405e-865f-3d7e959e809f',
     "https://purl.imsglobal.org/spec/lti/claim/message_type" => "LtiResourceLinkRequest",
     "https://purl.imsglobal.org/spec/lti/claim/version" => "1.3.0",
-    "https://purl.imsglobal.org/spec/lti/claim/target_link_uri" => "https://ltiphp.ngrok.io/oidc_demo/lti_launch.php",
+    "https://purl.imsglobal.org/spec/lti/claim/target_link_uri" => TOOL_HOST . "/game.php",
     "https://purl.imsglobal.org/spec/lti/claim/roles" => [
         "http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor"
     ],
     "https://purl.imsglobal.org/spec/lti/claim/resource_link" => [
         "id" => "7b3c5109-b402-4eac-8f61-bdafa301cbb4",
     ],
+    "https://purl.imsglobal.org/spec/lti-nrps/claim/namesroleservice" => [
+        "context_memberships_url" => "http://localhost/platform/services/nrps",
+        "service_versions" => ["2.0"]
+    ],
+    "https://purl.imsglobal.org/spec/lti-ags/claim/endpoint" => [
+        "scope" => [
+          "https://purl.imsglobal.org/spec/lti-ags/scope/lineitem",
+          "https://purl.imsglobal.org/spec/lti-ags/scope/result.readonly",
+          "https://purl.imsglobal.org/spec/lti-ags/scope/score"
+        ],
+        "lineitems" => "http://localhost/platform/services/ags/lineitems.php",
+    ]
 ];
 $database = new Example_Database();
 $jwt = JWT::encode(
     $message_jwt,
-    $database->find_registration_by_issuer('https://localhost')->get_tool_private_key(),
+    file_get_contents(__DIR__ . '/../../db/platform.key'),
     'RS256',
-    '58f36e10-c1c1-4df0-af8b-85c857d1634f'
+    'fcec4f14-28a5-4697-87c3-e9ac361dada5'
 );
 ?>
 
