@@ -12,6 +12,9 @@ echo json_encode([
             "roles" => [
                 "Instructor"
             ],
+            "group_enrollments" => [
+                ["group_id" => "4b8ae5e8-4de4-438f-92d3-6b856195293b"]
+            ],
             "message" => []
         ],
         [
@@ -23,6 +26,9 @@ echo json_encode([
             "user_id" => "4d0b3941-83f5-47fe-bd8a-66b39aa0651d",
             "roles" => [
                 "Instructor"
+            ],
+            "group_enrollments" => [
+                ["group_id" => "b2edddff-6dcc-4372-9f2c-410f954ba48f"]
             ],
             "message" => []
         ]

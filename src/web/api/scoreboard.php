@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
-require_once __DIR__ . '/../../db/example_database.php';
+require_once __DIR__ . '/../../db/example_postgres_database.php';
 
 use \IMSGlobal\LTI;
 $launch = LTI\LTI_Message_Launch::from_cache($_REQUEST['launch_id'], new Example_Database());
@@ -31,7 +31,11 @@ $members = $launch->get_nrps()->get_members();
 $scoreboard = [];
 
 foreach ($scores as $score) {
-    $result = ['score' => $score['resultScore']];
+    $result = [
+        'score' => $score['resultScore'],
+        'comment' => $score['comment'],
+        'user_id' => $score['userId']
+    ];
     foreach ($times as $time) {
         if ($time['userId'] === $score['userId']) {
             $result['time'] = $time['resultScore'];
@@ -46,5 +50,50 @@ foreach ($scores as $score) {
     }
     $scoreboard[] = $result;
 }
-echo json_encode($scoreboard);
+
+$scoreboards = [];
+
+if ($launch->has_gs()) {
+    $gs = $launch->get_gs();
+    $gbs = $gs->get_groups_by_set();
+    $users_by_group = [];
+    foreach ($members as $member) {
+        foreach ($member['group_enrollments'] as $enrollment) {
+            $users_by_group[$enrollment['group_id']][$member['user_id']] = $member;
+        }
+    }
+    foreach ($gbs as $set) {
+        $scoreboards[$set['id']] = [
+            'name' => $set['name'],
+            'id' => $set['id'],
+            'scoreboard' => []
+        ];
+        foreach ($set['groups'] as $group_id => $group) {
+            $result = [
+                'score' => 0,
+                'time' => 0,
+                'name' => $group['name']
+            ];
+            foreach ($scores as $score) {
+                if (isset($users_by_group[$group_id][$score['userId']])) {
+                    $result['score'] += $score['resultScore'];
+                }
+            }
+            foreach ($times as $time) {
+                if (isset($users_by_group[$group_id][$time['userId']])) {
+                    $result['time'] += $time['resultScore'];
+                }
+            }
+            $scoreboards[$set['id']]['scoreboard'][] = $result;
+        }
+    }
+}
+
+$scoreboards["all"] = [
+    'name' => 'All',
+    'id' => 'all',
+    'scoreboard' => $scoreboard,
+];
+
+echo json_encode($scoreboards);
 ?>

@@ -12,7 +12,6 @@ bgctx.fill();
 bgctx.font = "10px Gugi";
 bgctx.fillStyle = '#FFFFFF';
 bgctx.textAlign = "left";
-bgctx.fillText("Powered By Turnitin", 6, c.height-6);
 
 var score = 0;
 
@@ -21,10 +20,12 @@ function RNG(seed) {
     this.m = 0x80000000, // 2**31;
     this.a = 1103515245,
     this.c = 12345,
+    this.cycle = 0,
 
     this.state = seed ? seed : 54321,
 
     this.nextInt = function() {
+        this.cycle++;
         this.state = (this.a * this.state + this.c) % this.m;
         return this.state;
     },
@@ -36,9 +37,6 @@ function RNG(seed) {
         return this.nextInt() % (max + 1);
     }
 }
-
-// Seeded random, allows for repeatable game play.
-var srng = new RNG(45893845);
 
 var difficulty = {
     hard: {
@@ -135,13 +133,13 @@ function asteroid() {
         }
         ctx.save();
         ctx.beginPath();
-        ctx.fillStyle = 'rgba(66, 56, 26, 1)';
+        ctx.fillStyle = 'rgba(102, 87, 41, 1)';
         ctx.translate(this.x.pos, this.y.pos);
         ctx.rotate(this.rot * Math.PI);
         ctx.arc(0, 0, this.r, 0, 2 * Math.PI);
         ctx.fill();
 
-        ctx.strokeStyle = 'rgba(36, 31, 16, 1)';
+        ctx.strokeStyle = 'rgba(74, 64, 35, 1)';
         ctx.lineCap = 'round';
 
         ctx.lineWidth = 4;
@@ -159,7 +157,7 @@ function asteroid() {
         ctx.beginPath();
         ctx.arc(3, 5, this.r/2 , 0, 2 * Math.PI);
 
-        ctx.strokeStyle = 'rgba(36, 31, 16, 1)';
+        ctx.strokeStyle = 'rgba(74, 64, 35, 1)';
         ctx.lineCap = 'round';
 
         ctx.setLineDash([3,45,6,51]);
@@ -651,10 +649,6 @@ function bullet() {
     }
 }
 
-press_left = false;
-press_right = false;
-press_space = false;
-
 document.addEventListener('keydown', (event) => {
     const keyName = event.key;
     if (keyName == "ArrowLeft") {
@@ -693,11 +687,22 @@ document.addEventListener('keyup', (event) => {
 /**
  * Game Setup
  */
-pause = true;
-gameover = false;
-player = new shooter();
-asteroids = new asteroid_set();
-spaceships = new spaceship_set();
+
+function game_setup() {
+    window.score = 0;
+    // Seeded random, allows for repeatable game play.
+    window.srng = new RNG(45893845);
+    window.press_left = false;
+    window.press_right = false;
+    window.press_space = false;
+    window.pause = true;
+    window.gameover = false;
+    window.player = new shooter();
+    window.asteroids = new asteroid_set();
+    window.spaceships = new spaceship_set();
+    window.start_time = false;
+}
+game_setup();
 
 score_div = document.getElementById('score');
 frame_div = document.getElementById('framecount');
@@ -719,6 +724,14 @@ function recording() {
         return false;
     },
     this.load_recording = function(data) {
+        // reset RNG and other things
+        window.game_setup();
+        this.frame_count = 0;
+        this.frame_buffer = '';
+        this.recording_data = '';
+        this.replay = [];
+        this.replay_data = '';
+
         this.replay_data = data;
         // Read off 6 characters of the base 32 number.
         for (var i = 0; i < data.length; i += 6) {
@@ -741,6 +754,7 @@ function recording() {
             }
 
         }
+        window.frame();
     },
     this.add_frame = function(frame) {
         // Create bitfield of inputs.
@@ -809,8 +823,8 @@ var frame = function() {
     if (window.player.lives < 1) {
         // Make sure all frames are saved.
         window.game_recorder.save_buffer();
+        console.log(window.game_recorder.replay_data);
         console.log(window.game_recorder.recording_data);
-        //document.getElementById('recording').innerText = window.game_recorder.recording_data;
         endGame();
     }
 
@@ -821,7 +835,7 @@ var frame = function() {
 
     // record or play back recording
     var f;
-    if (window.game_recorder.recording_loaded()) {
+    if (!pause && window.game_recorder.recording_loaded()) {
         f = window.game_recorder.next();
     } else {
         f = {
@@ -872,8 +886,12 @@ var frame = function() {
             ctx.font = "50px Gugi";
             ctx.fillStyle = '#FFFFFF';
             ctx.textAlign = "center";
-            ctx.fillText("Ready " + curr_user_name, c.width/2, c.height/2);
-            ctx.fillText("Press Space to Start", c.width/2, c.height/2 + 60);
+            if (window.game_recorder.recording_loaded()) {
+                ctx.fillText("Press Space to Play Recording", c.width/2, c.height/2);
+            } else {
+                ctx.fillText("Ready " + curr_user_name, c.width/2, c.height/2);
+                ctx.fillText("Press Space to Start", c.width/2, c.height/2 + 60);
+            }
         }
     } else {
         window.game_recorder.add_frame(f);
@@ -891,22 +909,53 @@ var frame = function() {
 }
 
 start_time = false;
-document.fonts.load('50px Gugi').then(frame);
+if (!for_user) {
+    document.fonts.load('50px Gugi').then(frame);
+}
 
 var endGame = function() {
     window.pause = true;
     window.gameover = true;
-    window.submitScore();
+    // Only submit a score if we just played the game
+    if (!window.game_recorder.recording_loaded()) {
+        window.submitScore();
+    }
 }
 
 var refreshScoreBoard = function() {
-    var scores = JSON.parse(this.responseText);
-    console.log(scores);
-    var output = '<tr><th>Score</th><th>Time</th><th>Name</th></tr>';
-    for (var i = 0; i < scores.length; i++) {
-        output += '<tr><td>' + scores[i].score + '</td><td>' + scores[i].time + 's</td><td>' + scores[i].name + '</td></tr>';
+    var teams = JSON.parse(this.responseText);
+    console.log(teams);
+    var output = '';
+    for (teamid in teams) {
+        if (for_user && teamid != 'all') {
+            continue;
+        }
+        output = '<li><a href="#leadertable-' + teamid + '">' + teams[teamid]['name'] + '</a></li>' + output;
     }
-    document.getElementById("leadertable").innerHTML = output;
+    output = '<ul class="tabs">' + output + '</ul>';
+    for (teamid in teams) {
+        if (for_user && teamid != 'all') {
+            continue;
+        }
+        var scores = teams[teamid]['scoreboard'];
+        output += '<table class="scoreboard-tab" id="leadertable-' + teamid + '" style="margin-left:12px;"><tr><th>Score</th><th>Time</th><th>Name</th><th>' + (teamid == 'all' ? 'Load Run' : '') + '</th></tr>';
+        for (var i = 0; i < scores.length; i++) {
+            if (for_user && for_user != scores[i].user_id) {
+                continue;
+            }
+            var load_save_btn = '';
+            if (scores[i].comment) {
+                load_save_btn = '<button class="load_btn" onclick="window.game_recorder.load_recording(\'' + scores[i].comment + '\'); window.c.focus();">&#x3E;</button>';
+                if (for_user) {
+                    window.game_recorder.load_recording(scores[i].comment);
+                    window.c.focus();
+                }
+            }
+            output += '<tr><td>' + scores[i].score + '</td><td>' + scores[i].time + 's</td><td>' + scores[i].name + '</td><td>' + load_save_btn + '</td></tr>';
+        }
+        output += '</table>';
+    }
+    document.getElementById("sets").innerHTML = output;
 }
 
 var submitScore = function() {

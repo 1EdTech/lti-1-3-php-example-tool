@@ -8,3 +8,14 @@ services:
       - ${BREAKOUT_PORT:-9001}:80
     volumes:
       - ./src:/srv/app
+
+  db:
+    image: postgres:9.6.6
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"

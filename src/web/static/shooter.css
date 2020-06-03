@@ -1,4 +1,49 @@
 body {
     background-color: black;
     color:white;
+    font-family: 'Gugi', cursive;
+}
+
+a {
+    color:white;
+    text-decoration: none;
+}
+
+#scoreboard {
+    border: solid 1px #000;
+    border-left: none;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    padding-bottom: 12px;
+    /*background: linear-gradient(to bottom, rgb(0, 0, 0), rgb(0, 0, 50) 500px);*/
+    color: white;
+}
+th, td {
+    color: white;
+}
+
+.scoreboard-tab:not(#leadertable-all), .scoreboard-tab:target ~ #leadertable-all {
+    display:none;
+}
+
+#sets .scoreboard-tab:target {
+    display: table;
+}
+
+ul.tabs li {
+    display: inline-block;
+    padding: 0 6px;
+}
+
+.load_btn {
+    background: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: 2px solid white;
+    margin-left: 24px;
+}
+
+ul.stats li, ul.stats li div {
+    display: inline-block;
 }
