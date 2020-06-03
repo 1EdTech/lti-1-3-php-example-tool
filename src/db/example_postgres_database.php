@@ -47,7 +47,7 @@ class Example_Database implements LTI\Database {
         }
 
         return LTI\LTI_Registration::new()
-            ->set_issuer($registration)
+            ->set_issuer($registration['issuer'])
             ->set_client_id($registration['client_id'])
             ->set_auth_login_url($registration['platform_login_auth_endpoint'])
             ->set_auth_token_url($registration['platform_service_auth_endpoint'])
@@ -92,7 +92,7 @@ class Example_Database implements LTI\Database {
         while($key = pg_fetch_assoc($key_result)) {
             $keys[$key['id']] = $key['private_key'];
         }
-
+        return $keys;
     }
 }
 ?>

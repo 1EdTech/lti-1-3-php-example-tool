@@ -26,14 +26,14 @@ $time_lineitem = LTI\LTI_Lineitem::new()
     ->set_resource_id('time'.$launch->get_launch_data()['https://purl.imsglobal.org/spec/lti/claim/resource_link']['id']);
 $times = $ags->get_grades($time_lineitem);
 
-$members = $launch->get_nrps()->get_members();
+$members = $launch->get_nrps()->get_members(true);
 
 $scoreboard = [];
 
 foreach ($scores as $score) {
     $result = [
         'score' => $score['resultScore'],
-        'comment' => $score['comment'],
+        'comment' => trim(strip_tags($score['comment'])),
         'user_id' => $score['userId']
     ];
     foreach ($times as $time) {
