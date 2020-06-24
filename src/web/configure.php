@@ -10,7 +10,7 @@ if (!$launch->is_deep_link_launch()) {
 $resource = LTI\LTI_Deep_Link_Resource::new()
     ->set_url(TOOL_HOST . "/game.php")
     ->set_custom_params(['difficulty' => $_REQUEST['diff']])
-    ->set_title('Breakout ' . $_REQUEST['diff'] . ' mode!');
+    ->set_title('Interstellar Intruders ' . $_REQUEST['diff'] . ' mode!');
 $launch->get_deep_link()
     ->output_response_form([$resource]);
 ?>

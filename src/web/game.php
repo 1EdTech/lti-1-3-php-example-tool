@@ -19,7 +19,7 @@ $launch = LTI\LTI_Message_Launch::new(new Example_Database())
 
 if ($launch->is_deep_link_launch()) {
     ?>
-    <div class="dl-config">
+    <div class="dl-config" style="padding:24px">
         <h1>Pick a Difficulty</h1>
         <ul>
             <li><a href="<?= TOOL_HOST ?>/configure.php?diff=easy&launch_id=<?= $launch->get_launch_id(); ?>">Easy</a></li>
