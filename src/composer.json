@@ -5,8 +5,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/IMSGlobal/lti-1-3-php-library",
-            "no-api": true
+            "url": "https://github.com/IMSGlobal/lti-1-3-php-library"
         }
     ],
     "authors": [
