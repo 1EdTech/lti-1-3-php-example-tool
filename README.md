@@ -55,6 +55,8 @@ To view the example platform, go to http://localhost:9001/platform
 
 **Note:** The platform is for example purposes only and not a full platform library.
 
+**Note:** If the platform does not load in your browser, try going to http://localhost:9001/platform/index.php.
+
 # Contributing
 If you have improvements, suggestions or bug fixes, feel free to make a pull request or issue and someone will take a look at it.
 
